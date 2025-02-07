@@ -10,6 +10,5 @@ tokio-util = "0.7.13"
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
-notary-client = { git = "https://github.com/tlsnotary/tlsn.git", tag = "v0.1.0-alpha.7" }
-tlsn-common = { git = "https://github.com/tlsnotary/tlsn.git", tag = "v0.1.0-alpha.7" }
-tlsn-prover = { git = "https://github.com/tlsnotary/tlsn.git", tag = "v0.1.0-alpha.7" }
+notary-client = { git = "https://github.com/tlsnotary/tlsn.git", tag = "v0.1.0-alpha.6" }
+tlsn-prover = { git = "https://github.com/tlsnotary/tlsn.git", tag = "v0.1.0-alpha.6" }

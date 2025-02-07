@@ -1,7 +1,6 @@
 use futures::future::join_all;
 use notary_client::{Accepted, NotarizationRequest, NotaryClient};
-use tlsn_common::config::ProtocolConfig;
-use tlsn_prover::{Prover, ProverConfig};
+use tlsn_prover::tls::{Prover, ProverConfig};
 use tokio_util::compat::TokioAsyncReadCompatExt;
 use tracing::level_filters::LevelFilter;
 use tracing_subscriber::EnvFilter;
@@ -42,24 +41,19 @@ async fn instance(id: usize) {
 
     let Accepted {
         io: notary_connection,
-        id: _session_id,
+        id: session_id,
         ..
     } = notary_client
         .request_notarization(notarization_request)
         .await
         .expect("Could not connect to notary. Make sure it is running.");
 
-    // Set up protocol configuration for prover.
-    let protocol_config = ProtocolConfig::builder()
-        .max_sent_data(MAX_SENT_DATA)
-        .max_recv_data(MAX_RECV_DATA)
-        .build()
-        .unwrap();
-
     // Create a new prover and set up the MPC backend.
     let prover_config = ProverConfig::builder()
-        .server_name(SERVER_DOMAIN)
-        .protocol_config(protocol_config)
+        .id(session_id)
+        .server_dns(SERVER_DOMAIN)
+        .max_sent_data(MAX_SENT_DATA)
+        .max_recv_data(MAX_RECV_DATA)
         .build()
         .unwrap();
 
